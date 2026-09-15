@@ -1,5 +1,5 @@
 # R-2R DAC 
-A technical design of a 4 bit voltage divider than takes 16 bits of information to divide a voltage of 3.3V to a resolution of 1/16
+A technical design of a 4 bit "resistor ladder" than takes 16 bits of information to divide a voltage of 3.3V to a resolution of 1/16
 
 
 Each bit can be switched on or off, either 3.3V or 0V (ground). The on/off state of each bit can be represented, from `1000`, `0100`, `0010`, `0001`.
