@@ -8,7 +8,7 @@ Due to the voltage divider formula
 
 $$V_{out} = V_{in} \cdot \frac{R_2}{R_1 + R_2}$$
 
-each bit gives half of the one above it because the equivalent resistance between each node and the ground is 20 kΩ / it remains the same for each node.
+each bit gives half of the one above it because the equivalent resistance between each node and the ground is 2R / it remains the same for each node.
 
 The voltage at the node $V_{out}$ is changed and halved for each corresponding change in bits from `1000` to `0100`, etc, $\frac{1}{2}$ to $\frac{1}{4}$ etc all the way to $\frac{1}{16}$. Thus, the finest possible resolution in this case is $\frac{1}{16}$, when only one bit is turned on, ie `0001`.
 
