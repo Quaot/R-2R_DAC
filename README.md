@@ -1,21 +1,31 @@
-# R-2R DAC 
-A technical design of a 4 bit "resistor ladder" than takes 16 bits of information to divide a voltage of 3.3V to a resolution of 1/16
+# r2r-dac
 
+A 4-bit R-2R ladder DAC built from eight resistors (10k and 20k), driven by 3.3 V logic.
 
-Each bit can be switched on or off, either 3.3V or 0V (ground). The on/off state of each bit can be represented, from `1000`, `0100`, `0010`, `0001`.
+![Schematic](docs/r2r_dac.svg)
 
-Due to the voltage divider formula
+## How it works
 
-$$V_{out} = V_{in} \cdot \frac{R_2}{R_1 + R_2}$$
+Each bit drives a 20k leg into the ladder, and the 10k series resistors halve each bit's contribution as it moves toward the LSB end. The output is
 
-each bit gives half of the one above it because the equivalent resistance between each node and the ground is 2R / it remains the same for each node.
+    Vout = 3.3 V × code / 16
 
-The voltage at the node $V_{out}$ is changed and halved for each corresponding change in bits from `1000` to `0100`, etc, $\frac{1}{2}$ to $\frac{1}{4}$ etc all the way to $\frac{1}{16}$. Thus, the finest possible resolution in this case is $\frac{1}{16}$, when only one bit is turned on, ie `0001`.
+where `code` is the 4-bit input value, with B3 as the MSB. That gives 0 V at code 0, 1.65 V at code 8, and 3.09 V at code 15. Each step is 0.206 V.
 
-If more than one bit is turned on, ie. `0110` voltage of the two bits $\frac{1}{4}$ and $\frac{1}{8}$ of $V_{in}$ respectively would add to create $\frac{3}{8}$ of the $V_{in}$ into $V_{out}$.
+## Files
 
-This addition is due to superposition, since this circuit is made only of resistors and sources, you can turn on one bit at a time (with the others set to zero): in turn working out the effect of each source, and then add the results.
+| File | What it is |
+|---|---|
+| `r2r_dac.kicad_pro`, `r2r_dac.kicad_sch` | KiCad 10 project and schematic |
+| `r2r_dac.cir` | SPICE netlist with a 4-bit counter on the inputs |
+| `docs/r2r_dac.svg` | Schematic export |
 
-The final equation $V_{out}$ can be written as
+J1 takes the four bits (pin 1 = B0). J2 carries VOUT (pin 1) and GND (pin 2). The reference designators match the SPICE netlist.
 
-$$V_{out} = V_{in} \cdot \frac{\text{decimal conversion of the binary code}}{16}$$
+## Simulating
+
+```
+ngspice r2r_dac.cir
+```
+
+The netlist counts from 0 to 15 over 8 ms and measures the output at code 8 and code 15.

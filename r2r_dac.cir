@@ -1,0 +1,31 @@
+* 4-bit R-2R ladder DAC
+* Vout = 3.3 V * code / 16
+
+.param r=10k
+
+* Counter bits, 3.3 V logic
+VB0 b0 0 PULSE(0 3.3 0.5m 1u 1u 0.499m 1m)
+VB1 b1 0 PULSE(0 3.3 1m 1u 1u 0.999m 2m)
+VB2 b2 0 PULSE(0 3.3 2m 1u 1u 1.999m 4m)
+VB3 b3 0 PULSE(0 3.3 4m 1u 1u 3.999m 8m)
+
+* Ladder
+RT  n0   0    {2*r}
+R0  b0   n0   {2*r}
+RL0 n0   n1   {r}
+R1  b1   n1   {2*r}
+RL1 n1   n2   {r}
+R2  b2   n2   {2*r}
+RL2 n2   vout {r}
+R3  b3   vout {2*r}
+
+.tran 10u 8m
+
+.control
+run
+meas tran code8  find v(vout) at=4.25m
+meas tran code15 find v(vout) at=7.75m
+plot v(vout)
+.endc
+
+.end
