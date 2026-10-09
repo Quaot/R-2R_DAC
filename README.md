@@ -21,3 +21,12 @@ This addition is due to superposition, since this circuit is made only of resist
 The final equation $V_{out}$ can be written as
 
 $$V_{out} = V_{in} \cdot \frac{\text{decimal conversion of the binary code}}{16}$$
+
+## Concept board
+
+`pcb/` holds a concept two-layer layout for this circuit: 33 × 20 mm, 0805 resistors, 2.54 mm headers for the four
+bits (B0 to B3) and for VOUT and GND, with a ground pour on the bottom layer. `pcb/make_pcb.py` writes the Gerbers and
+drill file in `pcb/gerbers/` from the same netlist as `r2r_dac.cir`.
+
+The board has not been manufactured and has not been through a design-rule check in an EDA tool. A 3D view of it is on
+[justin.brogu.ca/p/r2r-dac](https://justin.brogu.ca/p/r2r-dac/).
